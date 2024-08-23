@@ -17,15 +17,24 @@ if (!cached) {
 }
 
 export const connectToDatabase = async () => {
+  console.log("Attempting to connect to MongoDB...");
   if (cached.conn) return cached.conn;
   if (!MONGODB_URL) throw new Error("Missing MONGODB_URL");
 
-  cached.promise =
-    cached.promise ||
-    mongoose.connect(MONGODB_URL, {
-      dbName: "imaginify",
-      bufferCommands: false,
-    });
-  cached.conn = await cached.promise;
+  if (!cached.promise) {
+    try {
+      cached.promise = mongoose.connect(MONGODB_URL, {
+        dbName: "saas",
+        bufferCommands: false,
+      });
+      cached.conn = await cached.promise;
+    } catch (error) {
+      cached.promise = null; // Reset promise in case of failure
+      console.error("MongoDB connection error:", error);
+      throw error;
+    }
+  }
+
+  console.log("MongoDB connected");
   return cached.conn;
 };
