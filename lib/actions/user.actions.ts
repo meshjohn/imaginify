@@ -1,19 +1,19 @@
-"use server"
+"use server";
 
 import { revalidatePath } from "next/cache";
 
 import User from "../database/models/user.model";
 import { connectToDatabase } from "../database/mongoose";
 import { handleError } from "../utils";
-import { CreateUserParams, UpdateUserParams } from "@/types";
 
 // CREATE
 export async function createUser(user: CreateUserParams) {
   try {
     await connectToDatabase();
-    const newUser = await User.create(user);
-    return JSON.parse(JSON.stringify(newUser));
 
+    const newUser = await User.create(user);
+
+    return JSON.parse(JSON.stringify(newUser));
   } catch (error) {
     handleError(error);
   }
@@ -38,7 +38,7 @@ export async function getUserById(userId: string) {
 export async function updateUser(clerkId: string, user: UpdateUserParams) {
   try {
     await connectToDatabase();
-    
+
     const updatedUser = await User.findOneAndUpdate({ clerkId }, user, {
       new: true,
     });
