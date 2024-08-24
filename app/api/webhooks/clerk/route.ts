@@ -80,7 +80,10 @@ export async function POST(req: Request) {
         },
       });
     }
-
+    
+    if (evt.type === 'user.created') {
+      console.log('userId:', evt.data.id)
+    }
     return NextResponse.json({ message: "OK", user: newUser });
   }
 
@@ -90,7 +93,7 @@ export async function POST(req: Request) {
 
     const user = {
       firstName: first_name,
-      lastName: last_name,
+      lastName: last_name ?? '',
       username: username!,
       photo: image_url,
     };
