@@ -25,10 +25,7 @@ export const connectToDatabase = async () => {
     mongoose.connect(MONGODB_URL, { 
       dbName: 'imaginify', bufferCommands: false 
     })
-
-    console.log('Attempting to connect to MongoDB...');
     cached.conn = await cached.promise;
-    console.log('Mongo connected');
     
   return cached.conn;
 }
